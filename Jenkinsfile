@@ -2,7 +2,7 @@
 pipeline {
     // Exécute le pipeline sur n'importe quel agent
     agent any
-    // Déclarer les variables d'environnement globales
+    // Déclarer les variables d'environnement globales 
     environment {
         DOCKER_USERNAME = "examen" // username docker
         IMAGE_VERSION = "1.${BUILD_NUMBER}"  // version dynamique de l’image
