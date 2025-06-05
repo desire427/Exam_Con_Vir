@@ -1,0 +1,33 @@
+{% extends "datavibes/base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h3>Dernières actualités en science des données</h3>
+    </div>
+    <div class="card-body">
+        {% if scraped_count %}
+            <div class="alert alert-info">
+                {{ scraped_count }} nouveaux articles récupérés avec succès !
+            </div>
+        {% endif %}
+        
+        {% if news %}
+            <div class="list-group">
+                {% for item in news %}
+                    <a href="{{ item.url }}" target="_blank" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ item.title }}</h5>
+                            <small>{{ item.publish_date }}</small>
+                        </div>
+                        <p class="mb-1">{{ item.summary|truncatechars:200 }}</p>
+                        <small class="text-muted">{{ item.source }}</small>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucune actualité disponible. <a href="{% url 'scrape_news' %}">Récupérer les actualités maintenant</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

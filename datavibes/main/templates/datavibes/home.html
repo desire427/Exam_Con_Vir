@@ -1,0 +1,47 @@
+{% extends "datavibes/base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3>Citation du jour en science des données</h3>
+            </div>
+            <div class="card-body">
+                {% if quote %}
+                    <blockquote class="blockquote">
+                        <p>{{ quote.quote }}</p>
+                        <footer class="blockquote-footer">{{ quote.author }}</footer>
+                    </blockquote>
+                    <small class="text-muted">Publiée le {{ quote.date }}</small>
+                {% else %}
+                    <p>Aucune citation pour aujourd'hui. Revenez plus tard !</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3>Dernières actualités en science des données</h3>
+            </div>
+            <div class="card-body">
+                {% if news %}
+                    <ul class="list-group">
+                        {% for item in news %}
+                            <li class="list-group-item">
+                                <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
+                                <br>
+                                <small class="text-muted">{{ item.source }} - {{ item.publish_date }}</small>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Aucune actualité disponible. <a href="{% url 'scrape_news' %}">Récupérer les actualités maintenant</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
