@@ -8,7 +8,7 @@ Le site s’appuie sur une base de données, une interface web simple, et un pip
 CI/CD complet avec GitHub, Jenkins et Docker. Un projet idéal pour illustrer une 
 application backend fonctionnelle avec automatisation du déploiement.
 
-Datavibes - Data Science Daily est une application Django minimaliste qui combine :
+Datavibes - DataVibes est une application Django minimaliste qui combine :
 
 - 📌 Une citation inspirante quotidienne sur la data science
 - 📰 Un scraper automatique des dernières actualités du domaine
