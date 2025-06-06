@@ -15,7 +15,7 @@ Datavibes - Data Science Daily est une application Django minimaliste qui combin
 
 🏗 Structure du Projet
 
-<pre> ``` text
+<pre> ```
 Exam_con_vir/
 ├── datavibes/               # Configuration du projet
 │   ├── __init__.py
@@ -71,7 +71,7 @@ Exam_con_vir/
 
 Modèles de Données
 
-<pre>```python
+<pre>```
 class DailyQuote(models.Model):
     quote = models.TextField()  # La citation
     author = models.CharField(max_length=200)  # L'auteur
@@ -98,14 +98,14 @@ Le scraper utilise :
 🐳 Déploiement avec Docker
 Construire l'image :
 
-<pre> ``` bash
-docker build -t inspire-scrape . ```
+<pre> ``` 
+docker build -t datavibes . ```
 </pre>
 
 Lancer le conteneur :
 
-<pre> ```bash
-docker run -p 8000:8000 inspire-scrape  ```
+<pre> ```
+docker run -p 8000:8000 datavibes  ```
 </pre>
 
 
