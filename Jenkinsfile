@@ -5,8 +5,8 @@ pipeline {
         DOCKER_HUB_USERNAME = "primslepremier2"
         IMAGE_VERSION = "1.${BUILD_NUMBER}"
         DOCKER_IMAGE = "${DOCKER_HUB_USERNAME}/tp-app:${IMAGE_VERSION}"
-        DOCKER_CONTAINER = "ci-cd-html-css-app"
-        CONTAINER_PORT = "8091"
+        DOCKER_CONTAINER = "exam_con_virtualisation"
+        CONTAINER_PORT = "8017"
     }
     
     stages {
