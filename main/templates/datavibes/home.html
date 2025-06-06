@@ -1,45 +1,89 @@
 {% extends "datavibes/base.html" %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h3>Citation du jour en science des données</h3>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Daily Quote Card -->
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-indigo-600 px-6 py-4">
+                <h3 class="text-xl font-semibold text-white">Citation du jour en science des données</h3>
             </div>
-            <div class="card-body">
+            <div class="p-6">
                 {% if quote %}
-                    <blockquote class="blockquote">
-                        <p>{{ quote.quote }}</p>
-                        <footer class="blockquote-footer">{{ quote.author }}</footer>
+                    <blockquote class="border-l-4 border-indigo-500 pl-4 mb-4">
+                        <p class="text-gray-700 text-lg italic">"{{ quote.quote }}"</p>
+                        <footer class="mt-2 text-gray-600">— {{ quote.author }}</footer>
                     </blockquote>
-                    <small class="text-muted">Publiée le {{ quote.date }}</small>
+                    <p class="text-sm text-gray-500">Publiée le {{ quote.date }}</p>
+                    
+                    <div class="mt-6 flex space-x-4">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition duration-300">
+                            <i class="fab fa-twitter mr-2"></i>Partager
+                        </button>
+                        <button class="bg-gray-700 hover:bg-gray-800 text-white px-4 py-2 rounded transition duration-300">
+                            <i class="fas fa-copy mr-2"></i>Copier
+                        </button>
+                    </div>
                 {% else %}
-                    <p>Aucune citation pour aujourd'hui. Revenez plus tard !</p>
+                    <div class="text-center py-8">
+                        <i class="fas fa-quote-left text-gray-300 text-4xl mb-4"></i>
+                        <p class="text-gray-600">Aucune citation pour aujourd'hui. Revenez plus tard !</p>
+                    </div>
                 {% endif %}
             </div>
         </div>
-    </div>
-    
-    <div class="col-md-6">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                <h3>Dernières actualités en science des données</h3>
+
+        <!-- News Card -->
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="bg-green-600 px-6 py-4">
+                <h3 class="text-xl font-semibold text-white">Dernières actualités en science des données</h3>
             </div>
-            <div class="card-body">
+            <div class="p-6">
                 {% if news %}
-                    <ul class="list-group">
+                    <ul class="divide-y divide-gray-200">
                         {% for item in news %}
-                            <li class="list-group-item">
-                                <a href="{{ item.url }}" target="_blank">{{ item.title }}</a>
-                                <br>
-                                <small class="text-muted">{{ item.source }} - {{ item.publish_date }}</small>
+                            <li class="py-4">
+                                <a href="{{ item.url }}" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-medium transition duration-300">
+                                    {{ item.title }}
+                                </a>
+                                <div class="mt-1 flex items-center text-sm text-gray-500">
+                                    <span>{{ item.source }}</span>
+                                    <span class="mx-2">•</span>
+                                    <span>{{ item.publish_date }}</span>
+                                </div>
                             </li>
                         {% endfor %}
                     </ul>
                 {% else %}
-                    <p>Aucune actualité disponible. <a href="{% url 'scrape_news' %}">Récupérer les actualités maintenant</a></p>
+                    <div class="text-center py-8">
+                        <i class="fas fa-newspaper text-gray-300 text-4xl mb-4"></i>
+                        <p class="text-gray-600 mb-4">Aucune actualité disponible.</p>
+                        <a href="{% url 'scrape_news' %}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition duration-300">
+                            <i class="fas fa-cloud-download-alt mr-2"></i>
+                            Récupérer les actualités maintenant
+                        </a>
+                    </div>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Previous quotes section - optional -->
+    <div class="mt-12">
+        <h4 class="text-lg font-medium text-gray-800 mb-4">Citations récentes</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Example quotes - replace with dynamic content -->
+            <div class="bg-white p-4 rounded-lg shadow-sm border-l-2 border-indigo-300">
+                <p class="text-gray-600 italic">"Data is a precious thing and will last longer than the systems themselves."</p>
+                <p class="text-sm text-gray-500 mt-1">— Tim Berners-Lee • 2023-10-15</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border-l-2 border-indigo-300">
+                <p class="text-gray-600 italic">"Without big data analytics, companies are blind and deaf, wandering out onto the web like deer on a freeway."</p>
+                <p class="text-sm text-gray-500 mt-1">— Geoffrey Moore • 2023-10-14</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-sm border-l-2 border-indigo-300">
+                <p class="text-gray-600 italic">"Torture the data, and it will confess to anything."</p>
+                <p class="text-sm text-gray-500 mt-1">— Ronald Coase • 2023-10-13</p>
             </div>
         </div>
     </div>

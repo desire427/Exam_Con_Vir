@@ -1,18 +1,71 @@
 {% extends "datavibes/base.html" %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header bg-warning">
-        <h3>Récupérer les actualités en science des données</h3>
-    </div>
-    <div class="card-body">
-        <p>Ceci va récupérer les dernières actualités en science des données depuis diverses sources.</p>
-        <p>Êtes-vous sûr(e) de vouloir continuer ?</p>
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">Lancer la récupération</button>
-            <a href="{% url 'news_list' %}" class="btn btn-secondary">Annuler</a>
-        </form>
+<!-- This will be the modal trigger page -->
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="bg-yellow-500 px-6 py-4">
+            <h3 class="text-xl font-semibold text-white flex items-center">
+                <i class="fas fa-cloud-download-alt mr-2"></i>
+                Récupérer les actualités en science des données
+            </h3>
+        </div>
+        <div class="p-6">
+            <p class="text-gray-700 mb-4">Ceci va récupérer les dernières actualités en science des données depuis diverses sources.</p>
+            <p class="text-gray-700 mb-6">Êtes-vous sûr(e) de vouloir continuer ?</p>
+            
+            <div class="flex space-x-4">
+                <!-- This button will trigger the modal -->
+                <button onclick="openModal()" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition duration-300">
+                    Lancer la récupération
+                </button>
+                <a href="{% url 'news_list' %}" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-300">
+                    Annuler
+                </a>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- The Modal -->
+<div id="confirmationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full">
+        <div class="bg-yellow-500 px-6 py-4 rounded-t-lg">
+            <h3 class="text-xl font-semibold text-white">Confirmation</h3>
+        </div>
+        <div class="p-6">
+            <p class="text-gray-700 mb-6">Vous êtes sur le point de lancer la récupération des actualités. Cette opération peut prendre quelques instants.</p>
+            
+            <form method="post" id="scrapeForm">
+                {% csrf_token %}
+                <div class="flex justify-end space-x-4">
+                    <button type="button" onclick="closeModal()" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition duration-300">
+                        Annuler
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition duration-300">
+                        Confirmer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById('confirmationModal').classList.remove('hidden');
+    }
+    
+    function closeModal() {
+        document.getElementById('confirmationModal').classList.add('hidden');
+    }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('confirmationModal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+</script>
 {% endblock %}

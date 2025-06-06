@@ -1,10 +1,10 @@
-# inspire_scrape/urls.py
 from django.urls import path
-from . import views
+from .views import HomeView, DailyQuoteView, NewsListView, ScrapeNewsView
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('quote/', views.daily_quote, name='daily_quote'),
-    path('news/', views.news_list, name='news_list'),
-    path('scrape/', views.scrape_news, name='scrape_news'),
-]
+    path('', HomeView.get, name='home'),
+    path('citation-du-jour/', DailyQuoteView.get, name='daily_quote'),
+    path('actualites/', NewsListView.as_view(), name='news_list'),
+    path('recuperer-actualites/', ScrapeNewsView.get, name='scrape_news'),
+    path('recuperer-actualites/confirmer/', ScrapeNewsView.post, name='confirm_scrape'),
+] 

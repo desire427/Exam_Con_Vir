@@ -1,52 +1,48 @@
-# inspire_scrape/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views.generic import ListView
 from django.utils import timezone
 from .models import DailyQuote, DataScienceNews
 from .utils import scrape_datascience_news
 from datetime import date
+import random
 
-def home(request):
-    # Try to get today's quote
-    today = date.today()
-    try:
-        quote = DailyQuote.objects.get(date=today)
-    except DailyQuote.DoesNotExist:
-        quote = None
-    
-    # Get latest news (last 5)
-    news = DataScienceNews.objects.all().order_by('-publish_date')[:5]
-    
-    return render(request, 'datavibes/home.html', {
-        'quote': quote,
-        'news': news,
-    })
+class HomeView:
+    @staticmethod
+    def get(request):
+        context = {
+            'quote': DailyQuote.get_todays_quote(),
+            'news': DataScienceNews.objects.all().order_by('-publish_date')[:5]
+        }
+        return render(request, 'datavibes/home.html', context)
 
-def daily_quote(request):
-    # Try to get today's quote
-    today = date.today()
-    try:
-        quote = DailyQuote.objects.get(date=today)
-    except DailyQuote.DoesNotExist:
-        quote = None
-    
-    return render(request, 'datavibes/daily_quote.html', {
-        'quote': quote,
-    })
-
-def news_list(request):
-    news = DataScienceNews.objects.all().order_by('-publish_date')
-    return render(request, 'datavibes/news_list.html', {
-        'news': news,
-    })
-
-def scrape_news(request):
-    if request.method == 'POST':
-        # Scrape news from target sites
-        new_news_count = scrape_datascience_news()
+class DailyQuoteView:
+    @staticmethod
+    def get(request):
+        quote = DailyQuote.get_todays_quote()
+        random_quote = None
         
-        return render(request, 'datavibes/news_list.html', {
-            'news': DataScienceNews.objects.all().order_by('-publish_date'),
-            'scraped_count': new_news_count,
+        # Only show random quote if there's no quote for today
+        if not quote:
+            random_quote = DailyQuote.get_random_quote()
+        
+        return render(request, 'datavibes/daily_quote.html', {
+            'quote': quote,
+            'random_quote': random_quote
         })
+
+class NewsListView(ListView):
+    model = DataScienceNews
+    template_name = 'datavibes/news_list.html'
+    context_object_name = 'news'
+    ordering = ['-publish_date']
+    paginate_by = 10
+
+class ScrapeNewsView:
+    @staticmethod
+    def get(request):
+        return render(request, 'datavibes/scrap_confirm.html')
     
-    return render(request, 'datavibes/scrap_confirm.html')
+    @staticmethod
+    def post(request):
+        new_news_count = scrape_datascience_news()
+        return redirect('news_list')

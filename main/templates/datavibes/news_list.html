@@ -1,33 +1,58 @@
 {% extends "datavibes/base.html" %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header bg-success text-white">
-        <h3>Dernières actualités en science des données</h3>
-    </div>
-    <div class="card-body">
-        {% if scraped_count %}
-            <div class="alert alert-info">
-                {{ scraped_count }} nouveaux articles récupérés avec succès !
-            </div>
-        {% endif %}
-        
-        {% if news %}
-            <div class="list-group">
-                {% for item in news %}
-                    <a href="{{ item.url }}" target="_blank" class="list-group-item list-group-item-action">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{ item.title }}</h5>
-                            <small>{{ item.publish_date }}</small>
-                        </div>
-                        <p class="mb-1">{{ item.summary|truncatechars:200 }}</p>
-                        <small class="text-muted">{{ item.source }}</small>
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Card Header -->
+        <div class="bg-green-600 px-6 py-4">
+            <h3 class="text-xl font-semibold text-white flex items-center">
+                <i class="fas fa-newspaper mr-2"></i>
+                Dernières actualités en science des données
+            </h3>
+        </div>
+
+        <!-- Card Body -->
+        <div class="p-6">
+            {% if scraped_count %}
+                <div class="bg-indigo-100 border-l-4 border-indigo-500 text-indigo-700 p-4 mb-6 rounded">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>{{ scraped_count }} nouveaux articles récupérés avec succès !</span>
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if news %}
+                <div class="divide-y divide-gray-200">
+                    {% for item in news %}
+                        <a href="{{ item.url }}" target="_blank" class="block py-4 hover:bg-gray-50 px-2 rounded transition duration-200">
+                            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start">
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-medium text-indigo-600 hover:text-indigo-800 mb-1">{{ item.title }}</h4>
+                                    <p class="text-gray-600 mb-2">{{ item.summary|truncatechars:200 }}</p>
+                                    <div class="flex items-center text-sm text-gray-500">
+                                        <span class="bg-gray-100 px-2 py-1 rounded">{{ item.source }}</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2 sm:mt-0 sm:ml-4 text-sm text-gray-500">
+                                    <i class="far fa-calendar-alt mr-1"></i>
+                                    {{ item.publish_date }}
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12">
+                    <i class="fas fa-newspaper text-gray-300 text-5xl mb-4"></i>
+                    <p class="text-gray-600 mb-6">Aucune actualité disponible.</p>
+                    <a href="{% url 'scrape_news' %}" class="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-300">
+                        <i class="fas fa-cloud-download-alt mr-2"></i>
+                        Récupérer les actualités maintenant
                     </a>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>Aucune actualité disponible. <a href="{% url 'scrape_news' %}">Récupérer les actualités maintenant</a></p>
-        {% endif %}
+                </div>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
