@@ -6,7 +6,7 @@ pipeline {
         IMAGE_VERSION = "1.${BUILD_NUMBER}"
         DOCKER_IMAGE = "${DOCKER_HUB_USERNAME}/tp-app:${IMAGE_VERSION}"
         DOCKER_CONTAINER = "exam_con_virtualisation"
-        CONTAINER_PORT = "8017"
+        CONTAINER_PORT = "8091"
     }
     
     stages {
