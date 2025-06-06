@@ -30,6 +30,7 @@ Exam_con_vir/
 │   │       ├── base.html    # Template de base
 │   │       ├── home.html    # Page d'accueil
 │   │       ├── daily_quote.html  # Citations
+│   │       ├── scrap_confirm.html # confirmation du scraping
 │   │       └── news_list.html    # Actualités
 │   ├── __init__.py
 │   ├── admin.py             # Configuration admin
