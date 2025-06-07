@@ -2,11 +2,12 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_HUB_USERNAME = "primslepremier3"
+        DOCKER_HUB_USERNAME = "primslepremier3"  // Doit correspondre à votre compte Docker Hub
         IMAGE_VERSION = "1.${BUILD_NUMBER}"
-        DOCKER_IMAGE = "${DOCKER_HUB_USERNAME}/examen:${IMAGE_VERSION}"
+        DOCKER_IMAGE = "${DOCKER_HUB_USERNAME}/examen:${IMAGE_VERSION}"  // Nom cohérent
         DOCKER_CONTAINER = "exam_con_virtualisation"
-        CONTAINER_PORT = "8091"
+        CONTAINER_PORT = "8091"  // Port hôte
+        APP_PORT = "8000"        // Port conteneur (ajouté)
     }
     
     stages {
@@ -35,15 +36,13 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(
-                        credentialsId: '20041705',
+                        credentialsId: '20041705',  // Vérifiez cet ID dans Jenkins
                         usernameVariable: 'DOCKER_HUB_USER',
                         passwordVariable: 'DOCKER_HUB_PASSWORD'
                     )]) {
-                        // Méthode sécurisée pour le login Docker
-                        bat """
-                        echo %DOCKER_HUB_PASSWORD% | docker login -u %DOCKER_HUB_USER% --password-stdin
-                        docker push $DOCKER_IMAGE
-                        """
+                        // Méthode plus fiable pour le login
+                        bat 'docker login -u %DOCKER_HUB_USER% -p %DOCKER_HUB_PASSWORD%'
+                        bat "docker push $DOCKER_IMAGE"
                     }
                 }
             }
@@ -53,13 +52,12 @@ pipeline {
             steps {
                 script {
                     bat """
-                    docker container stop %DOCKER_CONTAINER% 2> nul || echo "Container already stopped"
-                    docker container rm %DOCKER_CONTAINER% 2> nul || echo "Container not found"
-                    docker container run -d --name %DOCKER_CONTAINER% -p %CONTAINER_PORT%:8000 %DOCKER_IMAGE%
+                    docker stop ${DOCKER_CONTAINER} 2> nul || echo "Container already stopped"
+                    docker rm ${DOCKER_CONTAINER} 2> nul || echo "Container not found"
+                    docker run -d --name ${DOCKER_CONTAINER} -p ${CONTAINER_PORT}:${APP_PORT} ${DOCKER_IMAGE}
                     """
                 }
             }
         }
-        
     }
 }
