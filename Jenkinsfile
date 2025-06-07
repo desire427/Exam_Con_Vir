@@ -2,9 +2,9 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_HUB_USERNAME = "primslepremier2"
+        DOCKER_HUB_USERNAME = "primslepremier3"
         IMAGE_VERSION = "1.${BUILD_NUMBER}"
-        DOCKER_IMAGE = "${DOCKER_HUB_USERNAME}/tp-app:${IMAGE_VERSION}"
+        DOCKER_IMAGE = "${DOCKER_HUB_USERNAME}/examen:${IMAGE_VERSION}"
         DOCKER_CONTAINER = "exam_con_virtualisation"
         CONTAINER_PORT = "8091"
     }
@@ -55,7 +55,7 @@ pipeline {
                     bat """
                     docker container stop %DOCKER_CONTAINER% 2> nul || echo "Container already stopped"
                     docker container rm %DOCKER_CONTAINER% 2> nul || echo "Container not found"
-                    docker container run -d --name %DOCKER_CONTAINER% -p %CONTAINER_PORT%:80 %DOCKER_IMAGE%
+                    docker container run -d --name %DOCKER_CONTAINER% -p %CONTAINER_PORT%:8000 %DOCKER_IMAGE%
                     """
                 }
             }
